@@ -17,18 +17,18 @@ const criarBanco = async () => {
     await db.exec(`
         CREATE TABLE IF NOT EXISTS incidentes(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            tipo_problema TEXT,      --O que aconteceu (Buraco, lixo, luz...)
-            localizacao TEXT,        --Onde aconteceu (Rua, bairro)
-            descricao TEXT,          --Detalhes da reclamação
-            prioridade TEXT,         --Bsixa, Média ou Alta
-            nome_solicitante TEXT,   --Quem está avisando
-            data_registro TEXT,      --Data em formato (ex: 16/03  16.03)
-            hora_registro TEXT       --Hora que foi registrado
-            status_resolucao TEXT DEFAULT 'Pendente'
+            tipo_problema TEXT,                                     --O que aconteceu (Buraco, lixo, luz...)
+            localizacao TEXT,                                       --Onde aconteceu (Rua, bairro)
+            descricao TEXT,                                         --Detalhes da reclamação
+            prioridade TEXT,                                        --Bsixa, Média ou Alta
+            nome_solicitante TEXT,                                  --Quem está avisando
+            data_registro TEXT,                                     --Data em formato (ex: 16/03  16.03)
+            hora_registro TEXT,                                     --Hora que foi registrado
+            status_resolucao TEXT DEFAULT 'Pendente'                --O banco define automaticamente como 'Pendente'
         )
         
         
-        `)
+        `);
 
         console.log("Banco de dados configurado: A tabela de registros urbanos está pronta");
     
@@ -76,14 +76,24 @@ const chamadosAna = await db.all(`SELECT * FROM incidentes WHERE nome_solicitant
 console.table(chamadosAna);
 
 
-//UPDATE
+ //UPDATE
 
-await db.run(`
-    UPDATE incidentes,
-    SET status_resolucao = "Em Análise",
-    WHERE data_registro = " 16/03/2026" `);
-console.log("Todas as reclamações do dia 16/03/2026 tiveram uma atualização");
+  await db.run(`
+  UPDATE incidentes
+  SET status_resolucao = "Em Análise"
+  WHERE data_registro = " 16/03/2026"
+  `);
 
+  console.log("Todos as reclamações do dia 16/03/2026 tiveram uma atualização");
+
+  //UPDATE
+
+  await db.run(`
+  UPDATE incidentes
+  SET status_resolucao = "Resolvido"
+  WHERE tipo_problema = "Falta de energia"
+  `);
+  console.log("Problema do hospital resolvido");
 
 
 //DELETE
