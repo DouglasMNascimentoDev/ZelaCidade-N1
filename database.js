@@ -108,7 +108,9 @@ const resultadoFinal = await db.all(`SELECT * FROM incidentes`);
 
 console.table(resultadoFinal)
 
+return db; //Retorna o banco (entregando a chave do banco pra alguém)
+
 
 };
 
-criarBanco();
+module.exports = {criarBanco} //Cria uma ponte que permite compartilhar fuções entre os arquivos.
