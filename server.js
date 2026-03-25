@@ -72,3 +72,44 @@ app.post("/incidentes", async (req, res) => {
 
 
 } )
+
+//Rota de Atualização
+
+app.put("/incidentes/:id", async (req, res) => {
+
+    const {id} = req.params;
+
+    const {descricao, prioridade, status_resolucao} = req.body;
+
+    const db = await criarBanco()
+
+    await db.run(`
+        UPDATE incidentes
+        SET descricao = ?,
+        prioridade = ?,
+        status_resolucao = ?      
+        WHERE id = ?`, [descricao, prioridade, status_resolucao, id]
+        )
+    
+        //Enviar uma resposta para o cliente
+        res.send(`O incidente ${id} foi atualizado com sucesso`)
+
+} );
+
+//Rota de remoção
+app.delete("/incidentes/:id", async (req, res) => {
+
+    const {id} = req.params;
+
+    const db = await criarBanco()
+
+    await db.run(`
+        DELETE FROM incidentes WHERE id = ?              
+        `, [id])
+        
+        res.send(`O incidente ${id} foi removido com sucesso`)
+
+
+
+
+})
